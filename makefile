@@ -171,6 +171,14 @@ go-test:
 	echo "go test $$service..."; \
     docker-compose -f docker-compose-dev.yml exec $$service sh -c 'go test -v -cover ./...'
 
+# hapus setelah sudah di uji
+go-test-git:
+	docker-compose -f docker-compose-dev.yml exec mantap sh -c 'go test -v -cover ./...'
+
+# hapus setelah sudah di uji
+migrate-up-git:
+	docker-compose -f docker-compose-dev.yml exec mantap sh -c 'migrate -path db/migration -database "postgres://root:mantap123@mantap_db:5432/mantap?sslmode=disable" -verbose up'
+
 delete-projectservice:
 	@read -p "Masukkan nama service: " service; \
 	if [ -z "$$service" ]; then \
