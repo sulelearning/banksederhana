@@ -31,4 +31,4 @@ jobs:
         fi
 
     - name: Test
-      run: docker-compose -f docker-compose-dev.yml exec mantap sh -c 'go test -v -cover ./...'
+      run: go test -v ./...
