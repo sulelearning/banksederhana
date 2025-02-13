@@ -1,26 +1,27 @@
-name: ci-test
+name: Run unit tests
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   test:
     name: Test
     runs-on: ubuntu-latest
+
     services:
       postgres:
-        image: postgres:latest
+        image: postgres:15-alpine
         env:
-          POSTGRES_DB: mantap
           POSTGRES_USER: root
           POSTGRES_PASSWORD: mantap123
+          POSTGRES_DB: mantap
         ports:
           - 5432:5432
         options: >-
-          --health-cmd "pg_isready -U root"
+          --health-cmd pg_isready
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
@@ -35,14 +36,14 @@ jobs:
       - name: Check out code into the Go module directory
         uses: actions/checkout@v2
 
-      - name: Get dependencies
+      - name: Install golang-migrate
         run: |
-          go get -v -t -d ./...
-          if [ -f Gopkg.toml ]; then
-            curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
-            dep ensure
-          fi
+          curl -L https://github.com/golang-migrate/migrate/releases/download/v4.14.1/migrate.linux-amd64.tar.gz | tar xvz
+          sudo mv migrate.linux-amd64 /usr/bin/migrate
+          which migrate
 
-      - name: Run Tests
-        run: |
-          go test -v -cover ./...
+      - name: Run migrations
+        run: make migrateup
+
+      - name: Test
+        run: make test
