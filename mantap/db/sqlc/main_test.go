@@ -12,9 +12,9 @@ import (
 const (
 	dbDriver = "postgres"
 	/* Untuk image */
-	// dbSource = "postgres://root:mantap123@mantap_db:5432/mantap?sslmode=disable"
+	dbSource = "postgres://root:mantap123@mantap_db:5432/mantap?sslmode=disable"
 	/* untuk host */
-	dbSource = "postgres://root:mantap123@127.0.0.1:5432/mantap?sslmode=disable"
+	// dbSource = "postgres://root:mantap123@127.0.0.1:5432/mantap?sslmode=disable"
 )
 
 var testQueries *Queries

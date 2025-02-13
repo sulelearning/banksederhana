@@ -43,7 +43,7 @@ jobs:
           which migrate
 
       - name: Run migrations
-        run: make migrateup
+        run: docker-compose -f docker-compose-dev.yml exec mantap sh -c 'migrate -path db/migration -database "$${DATABASE_URL}" -verbose up'
 
       - name: Test
-        run: go test -v -cover ./...
+        run: docker-compose -f docker-compose-dev.yml exec mantap sh -c 'go test -v -cover ./...'
