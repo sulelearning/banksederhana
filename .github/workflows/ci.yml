@@ -45,4 +45,4 @@ jobs:
 
       - name: Run Tests
         run: |
-          docker-compose -f docker-compose-dev.yml exec mantap sh -c 'go test -v -cover ./...'
+          go test -v -cover ./...
