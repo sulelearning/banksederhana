@@ -47,3 +47,7 @@ jobs:
 
       - name: Test
         run: make go-test-git
+        env:
+          POSTGRES_USER: root
+          POSTGRES_PASSWORD: mantap123
+          POSTGRES_DB: mantap
