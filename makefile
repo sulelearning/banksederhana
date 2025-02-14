@@ -171,14 +171,6 @@ go-test:
 	echo "go test $$service..."; \
     docker-compose -f docker-compose-dev.yml exec $$service sh -c 'go test -v -cover ./...'
 
-# hapus setelah sudah di uji
-go-test-git:
-	go test -v -cover ./...
-
-# hapus setelah sudah di uji
-migrate-up-git:
-	migrate -path db/migration -database "postgres://root:mantap123@127.0.0.1:5432/mantap?sslmode=disable" -verbose up
-
 delete-projectservice:
 	@read -p "Masukkan nama service: " service; \
 	if [ -z "$$service" ]; then \
@@ -215,7 +207,7 @@ create-projectservice:
 	sed -i -e "s|base|$${service}|g" -e "s|base_db|$${db_service}|g" -e "s|sule|$${service}|g" docker-compose-dev.yml; \
 	\
 	echo "" >> docker-compose-depl.yml; \
-	sed -n "3,21p" internal/docker-compose-depl.yml >> docker-compose-depl.yml; \
+	sed -n "3,27p" internal/docker-compose-depl.yml >> docker-compose-depl.yml; \
 	sed -i -e "s|base|$${service}|g" -e "s|base_db|$${db_service}|g" -e "s|sule|$${service}|g" docker-compose-depl.yml; \
 	\
 	echo "Service baru telah dibuat, dengan nama service $$service."; \
