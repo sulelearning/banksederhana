@@ -21,14 +21,14 @@ jobs:
       - name: Check out code into the Go module directory
         uses: actions/checkout@v2
 
-      - name: Build and Start Services
-        run: |
-          docker-compose -f docker-compose-depl.yml up -d --build mantap
-
       - name: Download wait-for-it script
         run: |
           curl -o wait-for-it.sh https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh
           chmod +x wait-for-it.sh
+
+      - name: Build and Start Services
+        run: |
+          docker-compose -f docker-compose-depl.yml up -d --build mantap
 
       - name: Wait for PostgreSQL to be ready
         run: |
