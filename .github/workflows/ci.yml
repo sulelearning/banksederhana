@@ -11,6 +11,21 @@ jobs:
     name: Test
     runs-on: ubuntu-latest
 
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: root
+          POSTGRES_PASSWORD: mantap123
+          POSTGRES_DB: mantap
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
       - name: Set up Docker
         run: |
@@ -25,9 +40,25 @@ jobs:
         run: |
           docker-compose -f docker-compose-depl.yml up -d --build mantap
 
+      - name: Download wait-for-it script
+        run: |
+          curl -o wait-for-it.sh https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh
+          chmod +x wait-for-it.sh
+
+      - name: Wait for PostgreSQL to be ready
+        run: |
+          sleep 20
+          ./wait-for-it.sh localhost:5432 --timeout=120 --strict -- echo "PostgreSQL is up"
+
+      - name: Install golang-migrate
+        run: |
+          curl -L https://github.com/golang-migrate/migrate/releases/download/v4.14.1/migrate.linux-amd64.tar.gz | tar xvz
+          sudo mv migrate.linux-amd64 /usr/bin/migrate
+          which migrate
+
       - name: Run migrations
         run: |
-          docker-compose -f docker-compose-depl.yml exec -T mantap sh -c 'migrate -path db/migration -database "postgres://root:mantap123@mantap_db:5432/mantap?sslmode=disable" -verbose up'
+          migrate -path db/migration -database "postgres://root:mantap123@localhost:5432/mantap?sslmode=disable" -verbose up
 
       - name: Run Tests
         run: |
