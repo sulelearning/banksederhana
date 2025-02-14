@@ -23,7 +23,7 @@ jobs:
 
       - name: Build and Start Services
         run: |
-          docker-compose -f docker-compose-dev.yml up --build mantap
+          docker-compose -f docker-compose-dev.yml up -d --build mantap
 
       - name: Run migrations
         run: |
