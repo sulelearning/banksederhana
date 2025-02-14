@@ -23,7 +23,7 @@ jobs:
 
       - name: Build and Start Services
         run: |
-          docker-compose -f docker-compose-dev.yml up -d --build mantap
+          docker-compose -f docker-compose-depl.yml up -d --build mantap
 
       - name: Download wait-for-it script
         run: |
@@ -37,13 +37,13 @@ jobs:
 
       - name: Run migrations
         run: |
-          docker-compose -f docker-compose-dev.yml exec -T mantap sh -c 'migrate -path db/migration -database "postgres://root:mantap123@mantap_db:5432/mantap?sslmode=disable" -verbose up'
+          docker-compose -f docker-compose-depl.yml exec -T mantap sh -c 'migrate -path db/migration -database "postgres://root:mantap123@mantap_db:5432/mantap?sslmode=disable" -verbose up'
 
       - name: Run Tests
         run: |
-          docker-compose -f docker-compose-dev.yml exec -T mantap sh -c 'go test -v -cover ./...'
+          docker-compose -f docker-compose-depl.yml exec -T mantap sh -c 'go test -v -cover ./...'
 
       - name: Stop Services
         if: always()
         run: |
-          docker-compose -f docker-compose-dev.yml down --rmi all
+          docker-compose -f docker-compose-depl.yml down --rmi all
