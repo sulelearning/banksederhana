@@ -37,7 +37,7 @@ jobs:
 
       - name: Run migrations
         run: |
-          migrate -path db/migration -database "postgres://root:mantap123@localhost:5432/mantap?sslmode=disable" -verbose up
+          migrate -path db/migration -database "postgres://root:mantap123@mantap_db:5432/mantap?sslmode=disable" -verbose up
 
       - name: Run Tests
         run: |
