@@ -177,7 +177,7 @@ go-test-git:
 
 # hapus setelah sudah di uji
 migrate-up-git:
-	migrate -path db/migration -database "postgres://root:mantap123@mantap_db:5432/mantap?sslmode=disable" -verbose up
+	migrate -path db/migration -database "postgres://root:mantap123@127.0.0.1:5432/mantap?sslmode=disable" -verbose up
 
 delete-projectservice:
 	@read -p "Masukkan nama service: " service; \
