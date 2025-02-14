@@ -17,7 +17,6 @@ services:
       DATABASE_URL: postgres://root:mantap123@mantap_db:5432/mantap?sslmode=disable
     ports:
       - "8080:8080"
-    entrypoint: [ "/usr/bin/wait-for-it.sh", "mantap_db:5432", "--", "/usr/bin/app" ]
 
   mantap_db:
     build:
