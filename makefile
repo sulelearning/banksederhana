@@ -173,11 +173,11 @@ go-test:
 
 # hapus setelah sudah di uji
 go-test-git:
-	docker-compose -f docker-compose-dev.yml exec mantap sh -c 'go test -v -cover ./...'
+	go test -v -cover ./...
 
 # hapus setelah sudah di uji
 migrate-up-git:
-	docker-compose -f docker-compose-dev.yml exec mantap sh -c 'migrate -path db/migration -database "postgres://root:mantap123@mantap_db:5432/mantap?sslmode=disable" -verbose up'
+	migrate -path db/migration -database "$(DATABASE_URL)" -verbose up
 
 delete-projectservice:
 	@read -p "Masukkan nama service: " service; \
