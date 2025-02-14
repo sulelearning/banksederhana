@@ -25,6 +25,15 @@ jobs:
         run: |
           docker-compose -f docker-compose-dev.yml up -d --build mantap
 
+      - name: Download wait-for-it script
+        run: |
+          curl -o wait-for-it.sh https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh
+          chmod +x wait-for-it.sh
+
+      - name: Wait for PostgreSQL to be ready
+        run: |
+          ./wait-for-it.sh mantap_db:5432 --timeout=60 --strict -- echo "PostgreSQL is up"
+
       - name: Run migrations
         run: |
           docker-compose -f docker-compose-dev.yml exec -T mantap sh -c 'migrate -path db/migration -database "postgres://root:mantap123@mantap_db:5432/mantap?sslmode=disable" -verbose up'
